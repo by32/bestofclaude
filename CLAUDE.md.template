@@ -1,0 +1,900 @@
+# CLAUDE.md Template with Best Practices Annotations
+
+<!-- 
+This is a comprehensive CLAUDE.md template based on Claude Code best practices.
+Copy this file to your project root as CLAUDE.md and customize for your specific needs.
+
+Key Benefits of using CLAUDE.md:
+- Provides persistent context across all Claude Code sessions
+- Reduces repetitive explanations and setup
+- Ensures consistency across team members
+- Implements project-specific standards and guardrails
+- Improves Claude's understanding of your project conventions
+
+For more information, see: claude-code-best-practices.md
+-->
+
+# Project Context & Guidelines
+
+<!-- 
+PROJECT OVERVIEW SECTION
+Purpose: Gives Claude immediate context about what this project does and its scope
+Best Practice: Be specific about the domain, target users, and core functionality
+This prevents Claude from making incorrect assumptions about your project's purpose
+-->
+
+## Project Overview
+**Project Name:** [Your Project Name]
+**Type:** [Web Application/API/Mobile App/CLI Tool/Library/etc.]
+**Domain:** [E-commerce/Healthcare/Finance/Education/etc.]
+**Target Users:** [Developers/End Users/Businesses/etc.]
+
+**Core Purpose:** 
+[Brief 1-2 sentence description of what this project does]
+
+**Key Features:**
+- [Feature 1 - be specific about functionality]
+- [Feature 2 - mention any unique aspects]
+- [Feature 3 - include integrations or dependencies]
+
+---
+
+# Technology Stack & Architecture
+
+<!-- 
+TECHNOLOGY STACK SECTION
+Purpose: Establishes the exact versions and frameworks Claude should use
+Best Practice: Include specific versions to avoid compatibility issues
+This is critical for maintaining consistency and avoiding deprecated patterns
+-->
+
+## Required Technology Stack
+**Frontend:**
+- Framework: [React 18.x / Vue 3.x / Angular 15+ / Svelte / etc.]
+- Language: [TypeScript 5.x / JavaScript ES2022+ / etc.]
+- Styling: [Tailwind CSS 3.x / Styled Components / CSS Modules / etc.]
+- Build Tool: [Vite / Webpack / Parcel / etc.]
+
+**Backend:**
+- Runtime: [Node.js 18+ / Python 3.11+ / Go 1.21+ / etc.]
+- Framework: [Express / FastAPI / Gin / Next.js API / etc.]
+- Database: [PostgreSQL 15+ / MongoDB 6+ / Redis / etc.]
+- ORM/ODM: [Prisma / SQLAlchemy / GORM / Mongoose / etc.]
+
+**Development Tools:**
+- Package Manager: [npm / yarn / pnpm / pip / go mod / etc.]
+- Testing: [Jest / Vitest / pytest / Go testing / etc.]
+- Linting: [ESLint / Prettier / Black / golangci-lint / etc.]
+- Type Checking: [TypeScript / mypy / etc.]
+
+**Infrastructure:**
+- Containerization: [Docker / Podman]
+- Orchestration: [Kubernetes / Docker Compose]
+- CI/CD: [GitHub Actions / GitLab CI / Jenkins]
+- Cloud: [AWS / GCP / Azure / Digital Ocean]
+
+<!-- 
+ARCHITECTURE PRINCIPLES SECTION
+Purpose: Defines how code should be structured and organized
+Best Practice: Reference specific patterns like Clean Architecture, DDD, etc.
+This helps Claude suggest appropriate patterns and avoid anti-patterns
+-->
+
+## Architecture Principles
+**Design Patterns:**
+- Use Clean Architecture with clear separation of concerns
+- Implement Domain-Driven Design for business logic
+- Prefer composition over inheritance
+- Follow SOLID principles
+- Apply Repository pattern for data access
+
+**Project Structure:**
+```
+src/
+├── components/     # Reusable UI components
+├── pages/         # Route components / views
+├── hooks/         # Custom React hooks / composables
+├── services/      # API calls and external integrations
+├── utils/         # Pure utility functions
+├── types/         # TypeScript type definitions
+├── constants/     # Application constants
+└── tests/         # Test files co-located or in dedicated folder
+```
+
+---
+
+# Coding Standards & Conventions
+
+<!-- 
+CODING STANDARDS SECTION
+Purpose: Establishes specific formatting and naming conventions
+Best Practice: Be extremely specific about preferences to avoid back-and-forth
+Include examples for clarity - this saves significant time in code reviews
+-->
+
+## Code Formatting & Style
+**General Rules:**
+- Use 2-space indentation (no tabs)
+- Maximum line length: 100 characters
+- Use trailing commas in multi-line arrays/objects
+- Prefer explicit types over `any` in TypeScript
+- Use meaningful variable and function names (no abbreviations)
+
+**Naming Conventions:**
+- Files: `kebab-case.ts` (e.g., `user-profile.component.ts`)
+- Directories: `kebab-case` (e.g., `user-management/`)
+- Components: `PascalCase` (e.g., `UserProfile`, `NavigationMenu`)
+- Functions/Variables: `camelCase` (e.g., `getUserData`, `isAuthenticated`)
+- Constants: `SCREAMING_SNAKE_CASE` (e.g., `API_BASE_URL`, `MAX_RETRY_ATTEMPTS`)
+- CSS Classes: `kebab-case` (e.g., `user-card`, `navigation-menu`)
+
+**Import Organization:**
+```typescript
+// 1. External libraries
+import React from 'react'
+import { Router } from 'express'
+
+// 2. Internal modules (absolute imports)
+import { UserService } from '@/services/user.service'
+import { ApiResponse } from '@/types/api'
+
+// 3. Relative imports
+import './component.styles.css'
+```
+
+## Component Patterns
+**React Component Structure:**
+```typescript
+// Use this exact structure for all React components
+interface Props {
+  // Always define explicit prop types
+  title: string
+  isVisible?: boolean
+  onAction?: (id: string) => void
+}
+
+export const ComponentName: React.FC<Props> = ({ 
+  title, 
+  isVisible = true, 
+  onAction 
+}) => {
+  // 1. Hooks first
+  const [state, setState] = useState()
+  const navigate = useNavigate()
+  
+  // 2. Derived state and computations
+  const displayTitle = useMemo(() => title.toUpperCase(), [title])
+  
+  // 3. Event handlers
+  const handleClick = useCallback((id: string) => {
+    onAction?.(id)
+  }, [onAction])
+  
+  // 4. Effects last
+  useEffect(() => {
+    // Effect logic
+  }, [])
+  
+  // 5. Early returns
+  if (!isVisible) return null
+  
+  // 6. Render
+  return (
+    <div className="component-wrapper">
+      {/* JSX content */}
+    </div>
+  )
+}
+```
+
+---
+
+# Development Workflow & Commands
+
+<!-- 
+WORKFLOW SECTION
+Purpose: Defines the exact commands and processes for common tasks
+Best Practice: Include all common scenarios to avoid Claude guessing commands
+This is especially important for projects with custom scripts or complex workflows
+-->
+
+## Essential Commands
+**Development:**
+```bash
+# Start development server
+npm run dev
+
+# Run tests
+npm run test
+npm run test:watch
+npm run test:coverage
+
+# Type checking
+npm run type-check
+
+# Linting and formatting
+npm run lint
+npm run lint:fix
+npm run format
+
+# Build for production
+npm run build
+npm run build:analyze
+```
+
+**Database Operations:**
+```bash
+# Database migrations
+npm run db:migrate
+npm run db:migrate:rollback
+npm run db:seed
+
+# Generate Prisma client (if using Prisma)
+npm run db:generate
+```
+
+**Testing Strategy:**
+- Unit tests: Jest/Vitest for business logic and utilities
+- Component tests: React Testing Library for UI components
+- Integration tests: Test API endpoints and database interactions
+- E2E tests: Playwright for critical user journeys
+- Minimum 80% code coverage required for all new code
+
+## Git Workflow
+**Branch Naming:**
+- Feature: `feature/user-authentication`
+- Bugfix: `bugfix/login-validation-error`
+- Hotfix: `hotfix/security-patch-auth`
+- Chore: `chore/update-dependencies`
+
+**Commit Message Format:**
+Use Conventional Commits format:
+```
+feat(auth): add JWT token validation middleware
+
+- Implement token verification for protected routes
+- Add error handling for expired tokens
+- Include unit tests for validation logic
+
+Closes #123
+```
+
+**Pre-commit Requirements:**
+- All tests must pass
+- Code must pass linting and formatting
+- Type checking must succeed
+- No console.log statements in production code
+
+---
+
+# API & Data Patterns
+
+<!-- 
+API PATTERNS SECTION
+Purpose: Standardizes how Claude should structure API calls and data handling
+Best Practice: Include error handling patterns and response formats
+This ensures consistency across all API implementations
+-->
+
+## API Design Standards
+**Endpoint Naming:**
+- Use RESTful conventions: `GET /api/users`, `POST /api/users`, `PUT /api/users/:id`
+- Use plural nouns for collections: `/users`, `/products`, `/orders`
+- Use clear, descriptive paths: `/api/users/:id/orders` not `/api/user_orders`
+
+**Request/Response Format:**
+```typescript
+// Standard API Response Interface
+interface ApiResponse<T> {
+  success: boolean
+  data?: T
+  error?: {
+    code: string
+    message: string
+    details?: Record<string, any>
+  }
+  meta?: {
+    pagination?: {
+      page: number
+      limit: number
+      total: number
+      totalPages: number
+    }
+  }
+}
+
+// Error Handling Pattern
+try {
+  const response = await api.get<User[]>('/users')
+  if (!response.success) {
+    throw new ApiError(response.error.code, response.error.message)
+  }
+  return response.data
+} catch (error) {
+  if (error instanceof ApiError) {
+    // Handle known API errors
+    logger.warn('API Error:', error.message)
+  } else {
+    // Handle unexpected errors
+    logger.error('Unexpected Error:', error)
+  }
+  throw error
+}
+```
+
+**Data Validation:**
+- Use Zod for runtime type validation on both client and server
+- Validate all user inputs at API boundaries
+- Sanitize data before database operations
+- Always validate environment variables on startup
+
+## Database Patterns
+**Model Naming:**
+- Use singular nouns: `User`, `Product`, `Order` (not `Users`, `Products`)
+- Use descriptive relationship names: `user.orders`, `order.items`
+
+**Query Optimization:**
+- Always include appropriate indexes for query patterns
+- Use database transactions for multi-step operations
+- Implement proper pagination for list endpoints
+- Use connection pooling for production environments
+
+---
+
+# Security & Compliance Requirements
+
+<!-- 
+SECURITY SECTION
+Purpose: Establishes security standards that Claude must follow
+Best Practice: Be explicit about security requirements to prevent vulnerabilities
+This is critical for maintaining application security and compliance
+-->
+
+## Security Standards
+**Authentication & Authorization:**
+- Use JWT tokens with proper expiration (15 min access, 7 day refresh)
+- Implement proper password hashing with bcrypt (minimum 12 rounds)
+- Require multi-factor authentication for admin accounts
+- Use role-based access control (RBAC) for feature access
+
+**Data Protection:**
+- Encrypt all sensitive data at rest using AES-256
+- Use HTTPS for all communications (TLS 1.3 minimum)
+- Implement proper CORS policies (no wildcard origins in production)
+- Sanitize all user inputs to prevent XSS and SQL injection
+
+**Error Handling:**
+- Never expose internal error details to clients
+- Log all security-related events for auditing
+- Implement rate limiting on all public endpoints
+- Use secure session management practices
+
+**Dependency Management:**
+- Only use packages from approved whitelist (see .claude/approved-packages.json)
+- Run security audits before every deployment
+- Keep all dependencies updated (automated weekly checks)
+- Scan container images for vulnerabilities before deployment
+
+## Compliance Requirements
+**Data Privacy:**
+- Implement GDPR-compliant data handling
+- Provide data export and deletion capabilities
+- Include proper consent management
+- Maintain audit logs for data access
+
+**Code Quality:**
+- Minimum 80% test coverage on new code
+- All code must pass security scanning
+- No hardcoded secrets or API keys
+- Follow OWASP security guidelines
+
+---
+
+# Performance & Monitoring Standards
+
+<!-- 
+PERFORMANCE SECTION
+Purpose: Sets specific performance targets and monitoring requirements
+Best Practice: Include measurable metrics to guide optimization decisions
+This helps Claude make performance-conscious recommendations
+-->
+
+## Performance Targets
+**Frontend Performance:**
+- Core Web Vitals: LCP < 2.5s, FID < 100ms, CLS < 0.1
+- First Contentful Paint < 1.5s
+- Bundle size: Main bundle < 200KB gzipped
+- Route-based code splitting for all major sections
+
+**Backend Performance:**
+- API response time < 200ms for 95th percentile
+- Database queries < 100ms average
+- Support for 1000+ concurrent users
+- Memory usage < 512MB per instance
+
+**Monitoring Requirements:**
+- Log all API requests with timing data
+- Monitor error rates and alert on > 1% error rate
+- Track user interactions for performance insights
+- Implement health checks for all services
+
+## Optimization Strategies
+**Frontend:**
+- Use React.memo for expensive components
+- Implement virtual scrolling for large lists
+- Optimize images with next/image or similar
+- Use service workers for caching strategies
+
+**Backend:**
+- Implement Redis caching for frequently accessed data
+- Use database connection pooling
+- Optimize database queries with proper indexing
+- Implement graceful degradation for service failures
+
+---
+
+# Testing Strategy & Requirements
+
+<!-- 
+TESTING SECTION
+Purpose: Defines comprehensive testing standards and patterns
+Best Practice: Include specific testing patterns and coverage requirements
+This ensures Claude writes tests that match your project's testing philosophy
+-->
+
+## Testing Standards
+**Test Structure:**
+- Use AAA pattern: Arrange, Act, Assert
+- One assertion per test (prefer multiple specific tests)
+- Descriptive test names: `should return user data when valid ID provided`
+- Group related tests using `describe` blocks
+
+**Unit Testing:**
+```typescript
+// Example unit test structure
+describe('UserService', () => {
+  describe('getUserById', () => {
+    it('should return user data when valid ID provided', async () => {
+      // Arrange
+      const userId = '123'
+      const expectedUser = { id: '123', name: 'John Doe' }
+      vi.mocked(database.findById).mockResolvedValue(expectedUser)
+      
+      // Act
+      const result = await userService.getUserById(userId)
+      
+      // Assert
+      expect(result).toEqual(expectedUser)
+      expect(database.findById).toHaveBeenCalledWith(userId)
+    })
+    
+    it('should throw error when user not found', async () => {
+      // Arrange
+      const userId = '999'
+      vi.mocked(database.findById).mockResolvedValue(null)
+      
+      // Act & Assert
+      await expect(userService.getUserById(userId))
+        .rejects.toThrow('User not found')
+    })
+  })
+})
+```
+
+**Integration Testing:**
+- Test complete API endpoints with real database
+- Use test database that mirrors production schema
+- Include authentication and authorization testing
+- Test error scenarios and edge cases
+
+**Component Testing:**
+```typescript
+// Example React component test
+describe('UserCard Component', () => {
+  it('should display user information correctly', () => {
+    const user = { id: '1', name: 'John Doe', email: 'john@example.com' }
+    
+    render(<UserCard user={user} />)
+    
+    expect(screen.getByText('John Doe')).toBeInTheDocument()
+    expect(screen.getByText('john@example.com')).toBeInTheDocument()
+  })
+  
+  it('should call onEdit when edit button clicked', () => {
+    const user = { id: '1', name: 'John Doe', email: 'john@example.com' }
+    const onEdit = vi.fn()
+    
+    render(<UserCard user={user} onEdit={onEdit} />)
+    
+    fireEvent.click(screen.getByRole('button', { name: /edit/i }))
+    
+    expect(onEdit).toHaveBeenCalledWith(user.id)
+  })
+})
+```
+
+**Coverage Requirements:**
+- Minimum 80% overall coverage
+- 100% coverage for critical business logic
+- 90% coverage for API endpoints
+- All error scenarios must be tested
+
+---
+
+# Environment Configuration
+
+<!-- 
+ENVIRONMENT SECTION
+Purpose: Standardizes environment variable usage and configuration
+Best Practice: Include all environment variables with examples
+This prevents confusion about required configuration
+-->
+
+## Environment Variables
+**Required Variables:**
+```bash
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/myapp
+REDIS_URL=redis://localhost:6379
+
+# Authentication
+JWT_SECRET=your-super-secret-jwt-key-here
+JWT_REFRESH_SECRET=your-refresh-token-secret-here
+BCRYPT_ROUNDS=12
+
+# External APIs
+STRIPE_SECRET_KEY=sk_test_...
+SENDGRID_API_KEY=SG....
+AWS_ACCESS_KEY_ID=AKIA...
+AWS_SECRET_ACCESS_KEY=...
+AWS_REGION=us-east-1
+
+# Application
+NODE_ENV=development|staging|production
+PORT=3000
+API_BASE_URL=http://localhost:3000/api
+FRONTEND_URL=http://localhost:3001
+
+# Monitoring
+SENTRY_DSN=https://...
+LOG_LEVEL=info|debug|warn|error
+```
+
+**Environment-Specific Settings:**
+- **Development:** Detailed logging, hot reloading, relaxed CORS
+- **Staging:** Production-like setup with debug tools enabled
+- **Production:** Optimized builds, minimal logging, strict security
+
+## Configuration Management
+- Use `.env.example` file with dummy values for all required variables
+- Never commit actual API keys or secrets to version control
+- Use different databases for each environment
+- Implement configuration validation on application startup
+
+---
+
+# Deployment & CI/CD Pipeline
+
+<!-- 
+DEPLOYMENT SECTION
+Purpose: Defines deployment processes and CI/CD requirements
+Best Practice: Include specific steps and quality gates
+This ensures Claude understands your deployment workflow
+-->
+
+## Deployment Standards
+**CI/CD Pipeline Requirements:**
+1. **Code Quality Gate:**
+   - All tests must pass (unit, integration, E2E)
+   - Code coverage must meet minimum thresholds
+   - Security scanning must pass
+   - No linting errors or warnings
+
+2. **Security Gate:**
+   - Dependency vulnerability scanning
+   - Container image security scanning
+   - SAST (Static Application Security Testing)
+   - License compliance verification
+
+3. **Performance Gate:**
+   - Bundle size checks
+   - Lighthouse performance audits
+   - Load testing for critical endpoints
+   - Database migration validation
+
+**Deployment Environments:**
+- **Development:** Auto-deploy on merge to `develop` branch
+- **Staging:** Auto-deploy on merge to `main` branch
+- **Production:** Manual deployment with approval required
+
+**Rollback Strategy:**
+- Keep last 5 deployments ready for instant rollback
+- Implement database migration rollback procedures
+- Use blue-green deployment for zero-downtime updates
+- Monitor key metrics for 30 minutes post-deployment
+
+## Container Configuration
+**Dockerfile Standards:**
+- Use official, minimal base images (Alpine when possible)
+- Multi-stage builds to minimize image size
+- Non-root user execution
+- Health check endpoints implemented
+- Proper signal handling for graceful shutdowns
+
+---
+
+# Team Collaboration & Documentation
+
+<!-- 
+COLLABORATION SECTION
+Purpose: Establishes team communication and documentation standards
+Best Practice: Define clear processes for knowledge sharing
+This helps Claude understand team workflows and documentation requirements
+-->
+
+## Documentation Requirements
+**Code Documentation:**
+- All public functions must have JSDoc comments
+- Complex business logic requires inline comments
+- API endpoints must have OpenAPI/Swagger documentation
+- Database schema changes require migration documentation
+
+**Architecture Documentation:**
+- ADRs (Architectural Decision Records) for significant decisions
+- System architecture diagrams (updated quarterly)
+- API documentation auto-generated from code
+- Deployment runbooks for operations team
+
+**Knowledge Sharing:**
+- Weekly team technical sessions for major features
+- Code review required for all changes (minimum 2 approvers)
+- Technical design documents for complex features
+- Regular architecture review sessions
+
+## Code Review Standards
+**Review Checklist:**
+- [ ] Code follows established patterns and conventions
+- [ ] Adequate test coverage for new functionality
+- [ ] Security considerations addressed
+- [ ] Performance impact assessed
+- [ ] Documentation updated as needed
+- [ ] Error handling implemented properly
+- [ ] No hardcoded values or secrets
+
+**Review Process:**
+- Use GitHub/GitLab pull request templates
+- Require security team review for authentication/authorization changes
+- Performance team review for database schema changes
+- Architecture team review for significant design changes
+
+---
+
+# Project-Specific Instructions
+
+<!-- 
+PROJECT-SPECIFIC SECTION
+Purpose: Customize these instructions for your specific project needs
+Best Practice: Include domain-specific knowledge and unique requirements
+This section should be heavily customized based on your project
+-->
+
+## Business Logic & Domain Rules
+**[Customize this section for your project]**
+
+**Example for E-commerce Project:**
+- Orders cannot be modified after payment confirmation
+- Inventory must be reserved during checkout process
+- Refunds require manager approval for amounts > $500
+- Product prices include tax calculation based on shipping address
+- Abandoned carts expire after 24 hours
+
+**Example for Healthcare Project:**
+- All patient data must be HIPAA compliant
+- Audit logs required for all data access
+- Two-factor authentication mandatory for all users
+- Data retention policies vary by data type
+- Emergency access procedures for critical patient data
+
+## Integration Requirements
+**[Customize based on your external dependencies]**
+
+**Third-party Services:**
+- Payment processing: Stripe Connect for marketplace payments
+- Email delivery: SendGrid with branded templates
+- File storage: AWS S3 with CloudFront CDN
+- Search: Elasticsearch for product/content search
+- Analytics: Custom analytics with privacy compliance
+
+**API Integrations:**
+- Rate limiting: Respect partner API limits
+- Error handling: Implement circuit breaker patterns
+- Authentication: OAuth 2.0 for external services
+- Monitoring: Track integration health and performance
+
+## Troubleshooting Common Issues
+**[Include project-specific common problems and solutions]**
+
+**Development Environment:**
+- Database connection issues: Check Docker containers are running
+- Build failures: Clear node_modules and reinstall dependencies
+- Test failures: Ensure test database is properly seeded
+- Performance issues: Check for N+1 queries in development logs
+
+**Production Issues:**
+- High memory usage: Check for memory leaks in long-running processes
+- Slow API responses: Review database query performance
+- Authentication failures: Verify JWT secret configuration
+- External service failures: Implement proper fallback mechanisms
+
+---
+
+# Quick Reference Commands
+
+<!-- 
+QUICK REFERENCE SECTION
+Purpose: Provides Claude with immediate access to common commands
+Best Practice: Include all frequently used commands in one place
+This saves time and reduces errors in day-to-day development
+-->
+
+## Frequently Used Commands
+```bash
+# Development Setup
+npm install                          # Install dependencies
+npm run dev                         # Start development server
+npm run build                       # Build for production
+npm run test                        # Run all tests
+npm run test:watch                  # Run tests in watch mode
+
+# Database Operations
+npm run db:migrate                  # Run database migrations
+npm run db:seed                     # Seed database with test data
+npm run db:reset                    # Reset database to clean state
+
+# Code Quality
+npm run lint                        # Check code style
+npm run lint:fix                    # Auto-fix linting issues
+npm run type-check                  # TypeScript type checking
+npm run test:coverage               # Generate coverage report
+
+# Docker Operations
+docker-compose up -d                # Start all services
+docker-compose down                 # Stop all services
+docker-compose logs [service]       # View service logs
+
+# Git Operations
+git checkout -b feature/[name]      # Create feature branch
+git add . && git commit -m "[msg]"  # Stage and commit changes
+git push -u origin [branch]         # Push new branch to remote
+
+# Production Deployment
+npm run build:production            # Production build
+npm run deploy:staging              # Deploy to staging
+npm run deploy:production           # Deploy to production
+```
+
+## Emergency Procedures
+```bash
+# Rollback Deployment
+kubectl rollout undo deployment/[app-name]
+
+# Scale Application
+kubectl scale deployment [app-name] --replicas=5
+
+# Database Backup
+pg_dump $DATABASE_URL > backup_$(date +%Y%m%d_%H%M%S).sql
+
+# View Application Logs
+kubectl logs -f deployment/[app-name]
+```
+
+---
+
+# Custom Instructions for Claude
+
+<!-- 
+CLAUDE-SPECIFIC SECTION
+Purpose: Direct instructions for how Claude should behave in this project
+Best Practice: Be very specific about preferences and expectations
+This customizes Claude's behavior for your team's needs
+-->
+
+## Claude Behavior Guidelines
+
+**Code Generation Preferences:**
+- Always use TypeScript with strict type checking
+- Include error handling in all async operations
+- Write tests alongside implementation code
+- Follow the component patterns defined above
+- Include JSDoc comments for all public functions
+
+**Communication Style:**
+- Be concise but thorough in explanations
+- Provide working code examples
+- Explain reasoning behind architectural decisions
+- Suggest alternatives when appropriate
+- Ask clarifying questions for ambiguous requirements
+
+**When Making Suggestions:**
+- Always consider security implications
+- Prioritize maintainability over cleverness
+- Suggest performance optimizations when relevant
+- Include testing strategies for new features
+- Consider backward compatibility
+
+**Error Handling Approach:**
+- Fail fast with descriptive error messages
+- Use proper error types and status codes
+- Include logging for debugging purposes
+- Implement graceful degradation where possible
+- Provide user-friendly error messages
+
+## Specific Project Context
+**[Add any unique context about your project that Claude should know]**
+
+- This is a [greenfield/legacy/migration] project
+- Primary users are [technical/non-technical/mixed]
+- Performance is [critical/important/standard] for this application
+- Security requirements are [high/standard/relaxed]
+- Team experience level is [senior/mixed/junior]
+
+---
+
+# Maintenance & Updates
+
+<!-- 
+MAINTENANCE SECTION
+Purpose: Provides guidance for keeping the project current
+Best Practice: Include regular maintenance tasks and schedules
+This helps Claude suggest appropriate maintenance activities
+-->
+
+## Regular Maintenance Tasks
+
+**Weekly:**
+- Update dependencies (patch versions)
+- Review and merge dependabot PRs
+- Check application metrics and performance
+- Review error logs and fix critical issues
+
+**Monthly:**
+- Update dependencies (minor versions)
+- Review and update documentation
+- Performance optimization review
+- Security audit and vulnerability assessment
+
+**Quarterly:**
+- Major dependency updates (with testing)
+- Architecture review and optimization
+- Team process improvement sessions
+- Disaster recovery testing
+
+**Annually:**
+- Technology stack evaluation
+- Security penetration testing
+- Performance benchmarking
+- Documentation audit and cleanup
+
+## Version Management
+- Use semantic versioning (MAJOR.MINOR.PATCH)
+- Maintain changelog with all significant changes
+- Tag releases with detailed release notes
+- Keep supported versions clearly documented
+
+---
+
+<!-- 
+TEMPLATE CUSTOMIZATION NOTES
+When customizing this template for your project:
+
+1. Replace all [bracketed placeholders] with actual values
+2. Remove sections that don't apply to your project
+3. Add project-specific sections as needed
+4. Update the technology stack to match your choices
+5. Customize the business logic section for your domain
+6. Adjust performance targets based on your requirements
+7. Modify security requirements based on your compliance needs
+8. Update the deployment process to match your infrastructure
+
+Remember to keep this file updated as your project evolves!
+-->
