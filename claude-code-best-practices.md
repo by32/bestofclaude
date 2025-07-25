@@ -352,7 +352,102 @@ cat logs.txt | claude "Summarize error patterns"
 
 ## Engineering Best Practices
 
-These advanced patterns come from Anthropic's engineering team experience:
+These advanced patterns come from Anthropic's engineering team experience and real-world usage across diverse engineering teams:
+
+### Anthropic Internal Team Insights
+
+Based on how Anthropic's own engineering teams use Claude Code in production:
+
+#### Autonomous vs. Supervised Development Modes
+
+**Autonomous Mode for Rapid Prototyping:**
+```bash
+# Enable auto-accept mode for trusted tasks
+claude --auto-accept "Build a complete REST API for user management with authentication, CRUD operations, and comprehensive tests"
+
+# Set up self-verifying loops
+claude "Create a development workflow that automatically runs tests after each code change and reports results"
+```
+
+**Supervised Mode for Complex Features:**
+- Use detailed prompts with clear context
+- Provide frequent checkpoints and guidance
+- Commit progress regularly for easy rollbacks
+- Review and validate each major component
+
+#### Team-Specific Production Workflows
+
+**Data Infrastructure Team Patterns:**
+```bash
+# Kubernetes debugging automation
+claude "Debug this Kubernetes deployment failure, analyze logs, and provide fix recommendations with deployment yaml updates"
+
+# Plain text workflows for cross-functional teams
+claude "Create plain text documentation explaining our data pipeline architecture that non-technical stakeholders can understand"
+
+# Codebase onboarding for new hires
+claude "Generate comprehensive onboarding guide for our microservices architecture including service dependencies, deployment procedures, and debugging workflows"
+```
+
+**Product Development Team Patterns:**
+```bash
+# Complex feature implementation (like Vim mode)
+claude "Implement complete Vim mode for our text editor including normal, insert, and visual modes with proper keybinding handling"
+
+# Rapid feature prototyping
+claude "Create working prototype of real-time collaborative editing feature with conflict resolution and operational transforms"
+
+# Automated test generation for features
+claude "Generate comprehensive test suite for the new search functionality including unit tests, integration tests, and edge cases"
+```
+
+**Security Engineering Team Patterns:**
+```bash
+# Infrastructure security reviews
+claude "Review this Terraform configuration for security best practices, compliance requirements, and potential vulnerabilities"
+
+# Documentation synthesis across repositories
+claude "Synthesize security documentation from multiple repositories into unified security guidelines and incident response procedures"
+
+# Test-driven security development
+claude "Create security tests first, then implement the secure authentication system that passes all security requirements"
+```
+
+#### Production Development Strategies
+
+**Parallel Task Management:**
+```bash
+# Multi-repository coordination
+git worktree add ../security-audit security-review-branch
+git worktree add ../feature-dev main-feature-branch
+
+# Run parallel Claude sessions
+cd ../security-audit && claude "Perform security audit of authentication system"
+cd ../feature-dev && claude "Implement new user dashboard features"
+```
+
+**Context-Rich Development:**
+- Maintain comprehensive `CLAUDE.md` files with team-specific guidelines
+- Use custom slash commands for frequently repeated workflows
+- Start with small, manageable tasks and build complexity gradually
+- Enable autonomous work with periodic guidance and validation
+
+#### Key Success Patterns from Anthropic Teams
+
+**Development Velocity Improvements:**
+- **Accelerated onboarding**: New team members become productive faster through AI-assisted codebase exploration
+- **Reduced context switching**: Claude handles routine tasks while developers focus on architecture and complex logic
+- **Cross-team collaboration**: Non-technical teams can contribute through plain-text workflow descriptions
+
+**Quality and Reliability:**
+- **Enhanced testing**: Automated generation of comprehensive test suites with edge cases
+- **Documentation synthesis**: Automatic generation of up-to-date documentation from code and requirements
+- **Code review assistance**: AI-powered analysis of infrastructure code and security implications
+
+**Team Coordination Benefits:**
+- **Knowledge sharing**: Claude helps synthesize tribal knowledge into documented workflows
+- **Consistent practices**: Automated enforcement of team coding standards and security practices
+- **Rapid prototyping**: Quick validation of architectural decisions through working prototypes
 
 ### Multi-Claude Workflows
 - **Parallel instances**: Run multiple Claude sessions for different tasks simultaneously
@@ -2858,6 +2953,7 @@ claude "ultrathink about the architecture for this microservices system, conside
 ### Key Community Resources
 
 #### Essential Reading
+- **"How Anthropic Teams Use Claude Code"** - Official insights from Anthropic engineering teams on production workflows
 - **"Claude Code Top Tips: Lessons from the First 20 Hours"** by Waleed Kadous
 - **"How I use Claude Code (+ my best tips)"** on Builder.io
 - **"Vibing Best Practices with Claude Code"** by Nathan LeClaire
